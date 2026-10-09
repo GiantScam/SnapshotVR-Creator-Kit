@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Reserved/00
+  - Reserved/01
+  - Reserved/02
+  - Reserved/03
+  - Reserved/04
+  - Reserved/05
+  - Reserved/06
+  - Reserved/07
+  - Reserved/08
+  - Reserved/09
+  - Bunker
+  - Reserved/11
+  - NoWalk
+  - Reserved/13
+  - Reserved/14
+  - UGCScoreboardScreen
+  - Reserved/16
+  - Reserved/17
+  - Reserved/18
+  - UGCSpawnPointBlue
+  - UGCSpawnPointPink
+  - UGCSpawnPointSpectator
+  - Reserved/22
+  - UGCSpawnPointSpectatorBlue
+  - UGCSpawnPointSpectatorPink
+  - UGCPedestalPlaceholder
+  - UGCAdScreenPlaceholder
+  - UGCGunCalibrationPlaceholder
+  - UGCPreviewTablePlaceholder
+  - UGCConcedeButtonBlue
+  - UGCConcedeButtonPink
+  - UGCNoLayoutSupport
+  - UGCNoWalk
+  - UGCLayoutOrigin
+  - UGCPlayingAreaBlue
+  - UGCPlayingAreaPink
+  - UGCSpectatorArea
+  - UGCSpectatorAreaBlue
+  - UGCSpectatorAreaPink
+  - UGCStartBoxBlue
+  - UGCStartBoxPink
+  - UGCKillTeamButtonBlue
+  - UGCKillTeamButtonPink
+  - UGCSolid
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

@@ -1,0 +1,7 @@
+# Keep every file byte-for-byte as written. Kit content is mirrored in from a source project and
+# compared by content hash, so a line-ending conversion would show up as a change on every file.
+* -text
+
+# Kit maintenance tooling. Left out of release zips (git archive honours export-ignore).
+Assets/_KitDev export-ignore
+Assets/_KitDev.meta export-ignore

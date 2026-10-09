@@ -1,0 +1,61 @@
+# Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Built map bundles, and the zips made from them for mod.io. The build commands write both;
+# they are uploaded, never committed.
+/[Aa]ssets/[Ss]treamingAssets/
+/[Aa]ssets/[Ss]treamingAssets.meta
+/ModioUploads/
+
+# Maps made in this copy of the kit that are not part of the kit: test maps, examples, work in
+# progress. Keep them under Assets/LocalMaps/<MapName>/ and they never reach the kit's history.
+/[Aa]ssets/LocalMaps/
+/[Aa]ssets/LocalMaps.meta
+
+# Which mod.io page each bundle uploads to, written by Upload Maps to mod.io. Ignored so the kit
+# never ships with a mapping in it. Remove this line in your own project to commit yours.
+/ProjectSettings/ModioMapUploads.json
+
+# IDE and solution files Unity regenerates
+.vs/
+.vscode/
+.idea/
+.gradle/
+*.csproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity crash and import leftovers
+sysinfo.txt
+crashlytics-build.properties
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# Build outputs
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# OS
+.DS_Store
+Thumbs.db

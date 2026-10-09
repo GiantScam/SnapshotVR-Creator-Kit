@@ -1,0 +1,9 @@
+{
+  "unityVersion": "6000.3.24f1",
+  "maps": [
+    { "prefab": "Assets/CreatorKit/ReferenceMaps/UGCBackyardWoodsball.prefab", "walkableArea": 10372.0, "triangles": 7411 },
+    { "prefab": "Assets/CreatorKit/ReferenceMaps/UGCDusty.prefab", "walkableArea": 5717.4, "triangles": 2466 },
+    { "prefab": "Assets/CreatorKit/ReferenceMaps/UGCLocomotionTest.prefab", "walkableArea": 4461.8, "triangles": 1383 },
+    { "prefab": "Assets/CreatorKit/ReferenceMaps/UGCTheGym.prefab", "walkableArea": 5377.9, "triangles": 2075 }
+  ]
+}

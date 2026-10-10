@@ -4,8 +4,8 @@
 a map that works, and — more importantly — how to *prove* it works before anyone puts on a headset.
 
 If you are a human, read `README.md` at the top of the kit instead — this file assumes you can run
-Unity Editor scripts and read back the results. An agent should read `README.md` too: it is the
-creator guide, and it covers the same rules from the human's side.
+Unity Editor scripts and read back the results. An agent should read `README.md` and `REFERENCE.md` too: together they are the
+creator guide, and they cover the same rules from the human's side.
 
 ---
 
@@ -69,7 +69,7 @@ It changes the geometry, the tags, and what you must check.
 
 |  | **Layout map** | **Fixed-spawn map** |
 |---|---|---|
-| What it is | The game drops a rotating tournament bunker layout into your map | Your map is a permanent, fully custom space |
+| What it is | The game puts a tournament bunker layout into your map; the room's admin picks which one, and it does not change by itself | Your map is a permanent, fully custom space |
 | Layout support | Tag the mod.io page **Arena** | Tag the mod.io page **Map** (primary); `UGCNoLayoutSupport` tag on any one object is the local-testing fallback |
 | Team playing spawns | The game places them — you place **none** | **You** place all of them |
 | Spectator spawns | You place them | You place them |
@@ -236,7 +236,7 @@ open. The kit project includes the Pipeline package; the CLI is installed on the
 not in the project, so check for it.
 
 1. **Is the CLI installed?** Run `unity --version`. If it is missing, ask the human to install it;
-   `README.md` ("AI-assisted creation") links to Unity's instructions.
+   `REFERENCE.md` ("AI-assisted creation") links to Unity's instructions.
 2. **Is an editor reachable?** Run `unity status`. A project in state `ready` can be driven. If more
    than one editor is open, pass `--project-path <this project>` on every command, or you may be
    driving a different project.

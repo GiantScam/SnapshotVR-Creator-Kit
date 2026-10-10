@@ -45,7 +45,7 @@ public static class UGCMapValidator
     const float MaxY = 22f;
     const float MinY = -5f;
 
-    // The layout system's own footprint. On a map that hosts rotating layouts, this rectangle is
+    // The layout system's own footprint. On a map that hosts layouts, this rectangle is
     // reserved: ~30 bunkers and both start boxes are dropped into it at load, on top of whatever
     // you left there.
     const float LayoutHalfX = 20f;

@@ -3,6 +3,7 @@
 ![Five maps made with the kit, side by side: The Gym, Dusty, Backyard Woodsball, Mounds and Riverside Hyperball](guide-images/header.png)
 
 **Build your own maps for Snapshot VR**
+
 Unity 6000.3.24f1 · Free · No coding required
 
 ## What it is

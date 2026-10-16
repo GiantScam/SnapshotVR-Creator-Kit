@@ -9,6 +9,10 @@
 // So this exists: the smallest possible URP-compatible unlit shader whose texture slot is named
 // _Image. Unlit on purpose - a screen should read at full brightness under any lighting a creator
 // has, and it costs nothing.
+//
+// The instancing/stereo macros are not optional. PC VR renders both eyes in one instanced draw
+// (single-pass instanced); a shader without them only ever lands in the left eye. Quest's multiview
+// path happens to cope without them, which is how this shipped with a right-eye-blank scoreboard.
 Shader "UGC/Screen"
 {
     Properties
@@ -33,10 +37,22 @@ Shader "UGC/Screen"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile_instancing
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-            struct Attributes { float4 positionOS : POSITION; float2 uv : TEXCOORD0; };
-            struct Varyings   { float4 positionHCS : SV_POSITION; float2 uv : TEXCOORD0; };
+            struct Attributes
+            {
+                float4 positionOS : POSITION;
+                float2 uv : TEXCOORD0;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+
+            struct Varyings
+            {
+                float4 positionHCS : SV_POSITION;
+                float2 uv : TEXCOORD0;
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
 
             TEXTURE2D(_Image);
             SAMPLER(sampler_Image);
@@ -51,6 +67,8 @@ Shader "UGC/Screen"
             Varyings vert(Attributes IN)
             {
                 Varyings OUT;
+                UNITY_SETUP_INSTANCE_ID(IN);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _Image);
                 return OUT;
@@ -58,6 +76,7 @@ Shader "UGC/Screen"
 
             half4 frag(Varyings IN) : SV_Target
             {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
                 half3 img = SAMPLE_TEXTURE2D(_Image, sampler_Image, IN.uv).rgb * _BaseColor.rgb;
                 return half4(img + _OffColor.rgb, 1.0h);
             }

@@ -16,7 +16,7 @@ TagManager:
   - Reserved/09
   - Bunker
   - Reserved/11
-  - NoWalk
+  - Reserved/12
   - Reserved/13
   - Reserved/14
   - UGCScoreboardScreen
@@ -48,6 +48,7 @@ TagManager:
   - UGCKillTeamButtonBlue
   - UGCKillTeamButtonPink
   - UGCSolid
+  - UGCMirrorPlaceholder
   layers:
   - Default
   - TransparentFX

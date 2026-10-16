@@ -33,7 +33,9 @@ stays an inert mesh.
 directional light and ambient light taken from the sky, so a map with no lights of its own is lit.
 Neither lights nor a skybox are required, and a creator is free to add both. Each light costs frame
 time on a standalone headset. With a skybox material in the bundle, the sky and the ambient light
-follow it; with none, the map keeps the game's default sky.
+follow it; with none, the map keeps the game's default sky. A room admin can switch from Sunny (the default)
+to Spooky, which turns that sun off (the map falls back to ambient sky light plus its own lights), or
+to Jolly, which keeps the sun and adds snow over a 60 x 80 m area around the origin; both recolour the teams.
 
 **Materials: what the game's renderer does with them.** A map is drawn by the game's render
 pipeline (URP), on a standalone headset as well as a PC, so author to what that pipeline has
@@ -288,6 +290,7 @@ discarded.
 | Team exit button | `UGCConcedeButtonBlue` / `…Pink` | A concede/forfeit button |
 | Team starting box | `UGCStartBoxBlue` / `…Pink` | The team's start box, with its kill button live |
 | Standalone kill button | `UGCKillTeamButtonBlue` / `…Pink` | A kill-team button on its own |
+| Mirror | `UGCMirrorPlaceholder` | The "Enable Mirror" panel: players press its cover button to see themselves. 2 x 3 m, used from its −Z side, against a wall |
 | Scoreboard screen | `UGCScoreboardScreen` | Live match score, texture-injected — see below |
 | Blocking volume | `UGCNoWalk` | Not swapped — solid but not standable |
 | Solid geometry | `UGCSolid` | Not swapped — solid, standable on top, gets the head-in-geometry fade |
@@ -411,12 +414,15 @@ fit a smaller wall. The start box is **5.4 m** wide. The pedestal and calibratio
 their marker's **−Z** side (the user faces +Z). A pilaster, post or wall edge inside any of these looks
 exactly as broken in a headset as it sounds. Validate Map checks the ad screen and start box.
 
-**Scoreboards: nothing in front of the screen, and the right face out.** The screen must sit in front
-of every bezel, pilaster and moulding behind it — even 2 cm of trim proud of the screen draws straight
-through the score. On Unity's built-in **Cube**, only the **+Z** face shows the image upright; the
-−Z face shows it upside down, so point +Z at the players. On a custom quad, keep its UVs **0..1** — the
-score image does not repeat, so UVs in metres shrink it into one corner (or scale the material's
-`_Image` tiling back to 0..1).
+**Scoreboards: a Quad, nothing in front of it, and the right face out.** Put the scoreboard material on
+a **Quad**, never a Cube: the score is drawn on every face of the mesh, so a Cube also shows it on its
+back, edges and top, stretched or upside down. A frame or back is a separate object behind the quad. A
+Quad is drawn only on the side opposite its +Z (blue) axis, so point +Z away from the players. The
+screen must sit in front of every bezel, pilaster and moulding behind it — even 2 cm of trim proud of
+the screen draws straight through the score. On a custom quad mesh, keep its UVs **0..1** — the score
+image does not repeat, so UVs in metres shrink it into one corner (or scale the material's `_Image`
+tiling back to 0..1). Validate Map fails a scoreboard that is not flat, faces away from the players or
+is upside down.
 
 **Preview tables only on a layout map.** On a map that declares no layout support the table is deleted
 at load — there is no layout to preview.

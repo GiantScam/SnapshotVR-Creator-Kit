@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 1225099223831340792}
   - component: {fileID: 6724512550167736558}
   - component: {fileID: 4764665258901927506}
-  - component: {fileID: 8302222591479257241}
+  - component: {fileID: 584398055955081473}
   m_Layer: 0
   m_Name: Foliage
   m_TagString: UGCSolid
@@ -123,8 +123,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8302222591479257241
-BoxCollider:
+--- !u!64 &584398055955081473
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -141,6 +141,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.90419436, y: 0.99166787, z: 0.8816974}
-  m_Center: {x: 0.022527933, y: 0.0014300345, z: 0.0016138859}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 5d4d5e1a2401bdd45a8d471e582115e6, type: 2}

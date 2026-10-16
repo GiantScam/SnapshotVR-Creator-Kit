@@ -3,6 +3,7 @@
 ![Five maps made with the kit, side by side: The Gym, Dusty, Backyard Woodsball, Mounds and Riverside Hyperball](guide-images/header.png)
 
 **Build your own maps for Snapshot VR**
+
 Unity 6000.3.24f1 · Free · No coding required
 
 ## What it is
@@ -137,7 +138,7 @@ The same for every path.
 
 The [reference](REFERENCE.md) covers everything in detail. The parts people reach for first:
 
-- [Every tag and placeholder](REFERENCE.md#tags-and-placeholders), including scoreboards, start boxes and kill buttons
+- [Every tag and placeholder](REFERENCE.md#tags-and-placeholders), including scoreboards, start boxes, kill buttons and the mirror
 - [Spectator areas and the lobby](REFERENCE.md#where-the-game-sends-players--spectator-areas-and-the-lobby): where the game sends players, and how to seal an area off
 - [Ramps, stairs and walls](REFERENCE.md#ramps-stairs-and-walls-the-numbers-that-matter): the slopes and step heights players can climb
 - [Light, sky and materials](REFERENCE.md#light-sky-and-materials)
@@ -156,7 +157,7 @@ Every one of these has silently gone wrong on a real test map before. Apart from
 - [ ] Tagged the mod.io page **Arena** (hosts layouts) or **Map** (no layouts).
 - [ ] If your map hosts no layout: tagged the mod.io page **Map**, *and* placed both playing and spectator spawns yourself. (A `UGCNoLayoutSupport` tag left in the bundle is fine on a Map.)
 - [ ] Walls and cover are tagged `UGCSolid` or `UGCNoWalk` — put your head into one and confirm the screen blacks out.
-- [ ] Scoreboard mesh uses `UGCScoreboardScreen.mat` and showed a real score during a match — any other material fails silently.
+- [ ] Every scoreboard is a Quad using `UGCScoreboardScreen.mat`, and showed a real score during a match — any other material fails silently, and a Cube shows the score on every face.
 - [ ] Built all three platform bundles, and all three are on the mod page (the upload tool's **Check what is live** shows each one once approved). You can only test the Windows one yourself.
 - [ ] Checked every ramp/stair-to-platform join actually overlaps rather than butting flush.
 - [ ] Joined your own room and found the pedestal right in front of you; ended a match and the whole room fit in the lobby; got eliminated on **each** team and found a pedestal in that team's pit too.

@@ -104,6 +104,7 @@ Drag these from `Assets/CreatorKit/Placeholders/` into your scene wherever the r
 | Team exit button | `UGCConcedeButtonBlue` / `…Pink` | A working concede/forfeit button |
 | Team starting box | `UGCStartBoxBlue` / `…Pink` | The team's start box, team-coloured, with its built-in kill button live |
 | Standalone kill button | `UGCKillTeamButtonBlue` / `…Pink` | A working kill-team button on its own, without a start box around it |
+| Mirror | `UGCMirrorPlaceholder` | The "Enable Mirror" panel from the game's own arenas: players press its cover button to see themselves. A 2 × 3 m panel standing on the marker, used from its −Z side; put it against a wall. |
 | Scoreboard screen | `UGCScoreboardScreen` | Live match score, texture-injected — no prefab swap needed, just tag any screen mesh **using `Assets/CreatorKit/Materials/UGCScoreboardScreen.mat`** |
 | Blocking volume | `UGCNoWalk` | Not swapped — marks geometry as solid-but-not-standable (roofs, decorative ledges, anything you don't want players climbing). Also gives the head-in-geometry fade. |
 | Solid geometry | `UGCSolid` | Not swapped — marks your own walls, crates, platforms and other solid geometry so it gets the head-in-geometry fade. The top stays walkable. Not for paintball bunkers; those are `Bunker`. |
@@ -229,10 +230,11 @@ The game swaps each marker for a real object at the marker's position, rotation 
 - **Ad screen:** a **6 × 2 m** panel centred on the marker, readable from the marker's **+Z (blue arrow)** side. Scale the marker down to fit a smaller wall. A pilaster or wall edge inside that rectangle draws straight through the ad.
 - **Start box:** **5.4 m** wide. Keep posts and columns out of it.
 - **Pedestal and calibration station:** used from the marker's **−Z** side, so the player faces the blue arrow. Leave a metre of walkable floor there.
-- **Scoreboard:** the screen must sit **in front of** every bezel, pilaster and moulding behind it; even a couple of centimetres of trim in front draws through the score. On Unity's built-in **Cube**, only the **+Z** face shows the image upright, and the other side is upside down, so point +Z at the players. On your own quad, keep the UVs 0..1: the score image doesn't repeat, so UVs in metres shrink it into one corner.
+- **Mirror:** a **2 × 3 m** panel standing on the marker, used from its **−Z** side like the pedestal. Stand it against a wall; nothing is behind it.
+- **Scoreboard:** a **Quad**, not a Cube (see the steps below). It must sit **in front of** every bezel, pilaster and moulding behind it; even a couple of centimetres of trim in front draws through the score. On your own quad mesh, keep the UVs 0..1: the score image doesn't repeat, so UVs in metres shrink it into one corner.
 - **Preview table:** only on a map that uses layouts; it's deleted at load otherwise.
 
-**Validate Map** checks the spawn counts, the pedestal distance, the ad screen and start box footprints, and each scoreboard's material and facing. It can't see trim in front of a scoreboard; look at that yourself.
+**Validate Map** checks the spawn counts, the pedestal distance, the ad screen, start box and mirror footprints, and that each scoreboard has the right material, is a single flat face, faces the players and is the right way up. It can't see trim in front of a scoreboard; look at that yourself.
 
 ### Scoreboards
 
@@ -240,10 +242,10 @@ A scoreboard is a screen in your map that shows the live match score. It is opti
 
 It is the one game object you make yourself; there is no placeholder to drag in:
 
-1. **Make the screen.** A Cube scaled flat and wide works (for example Scale 4.2, 2.4, 0.1), or a Quad. Any size: the ones in the reference maps run from 4.2 × 2.4 m to 11.6 × 3.4 m.
+1. **Make the screen a Quad** (GameObject > 3D Object > Quad), scaled to the size you want, for example 4.2 × 2.4. Not a Cube: the score is drawn on every face of the mesh it is on, so a Cube also shows it on its back, edges and top, stretched or upside down. If the screen needs a frame or a back, make that a separate object behind it. The reference maps' screens run from 4.2 × 2.4 m to 11.6 × 3.4 m.
 2. **Give it the material** `Assets/CreatorKit/Materials/UGCScoreboardScreen.mat`. No other material works: the game draws the score into that one, and on anything else the screen silently stays blank.
 3. **Tag it** `UGCScoreboardScreen`.
-4. **Face it the right way.** On a Cube, the score reads upright on the **+Z** side (the blue arrow), so point that at the people who should read it. From the other side it is upside down.
+4. **Face it the right way.** A Quad is drawn on one side only, the side **opposite** its blue (+Z) arrow, so point the blue arrow away from the people who should read it. From behind it shows nothing.
 5. **Keep it clear.** Nothing in front of the screen, not even a frame that stands a couple of centimetres proud.
 
 It shows the plain material in Unity; the score appears in the game once a match is running. An **ad screen** is different: that one is a placeholder (`ad_screen_placeholder`) the game replaces with a working advert panel.
@@ -282,6 +284,8 @@ Vertical or near-vertical walls, ledges, and cover taller than an isolated step 
 ## Light, sky and materials
 
 **Light.** Your map loads into a scene that already has a sun: one white directional light with no shadows, plus ambient light taken from the sky. A map with no lights of its own is lit, the same way the game's own arenas are, so lights are not required. Add your own whenever you want them (an interior, lamps, a mood); just keep in mind that every light costs frame time on a standalone headset.
+
+**Room modes.** A room's admin can switch the room from **Sunny** (the default) to **Spooky** or **Jolly** on the pedestal. Spooky turns the sun off, so a map lit only by the sun drops to its sky's ambient light. If you want parts of your map to stay readable at night, give them lights of their own. Jolly keeps the sun and adds snowfall over a 60 × 80 m area around the map's origin. Spooky and Jolly also change the team colours, and every spawn point, start box and button the game swaps in changes with them.
 
 **Sky.** A skybox isn't required either, and you're welcome to add one. To give your map its own, create one Skybox material (any of Unity's standard skybox shader types — cubemap, 6-sided, panoramic, or procedural) and include it as a top-level object in your bundle. No script or tag needed — it's detected automatically, and the ambient light follows it. Only include one; a second skybox material in the same bundle is ignored. With none, your map keeps the game's default sky.
 
@@ -386,7 +390,7 @@ An **error** is something that will be broken in the game; fix every one. A **wa
 ### `Snapshot > UGC > Preview NavMesh`
 *Select your map's root object(s), then run it.*
 
-Bakes the walkable area using the **exact settings the live game uses** — same agent, same layer mask, same `UGCNoWalk`/`NoWalk` rule — and draws it in your Scene view. This is the one that answers "can players actually go where I think they can?"
+Bakes the walkable area using the **exact settings the live game uses** — same agent, same layer mask, same `UGCNoWalk` rule — and draws it in your Scene view. This is the one that answers "can players actually go where I think they can?"
 
 > If you don't see anything drawn: open the **AI Navigation** overlay (Overlays menu on the Scene view toolbar), expand Surfaces, and tick **Show NavMesh**. It's off by default even with the overlay open.
 

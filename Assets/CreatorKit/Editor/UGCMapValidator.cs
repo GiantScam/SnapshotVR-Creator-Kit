@@ -75,6 +75,7 @@ public static class UGCMapValidator
         ("UGCAdScreenPlaceholder", new Vector3(0f, 0f, 0f), new Vector3(6f, 2f, 0.04f)),
         ("UGCStartBoxBlue", new Vector3(0f, 0.59f, -0.35f), new Vector3(5.4f, 0.94f, 1.7f)),
         ("UGCStartBoxPink", new Vector3(0f, 0.59f, -0.35f), new Vector3(5.4f, 0.94f, 1.7f)),
+        ("UGCMirrorPlaceholder", new Vector3(0f, 1.59f, 0f), new Vector3(2f, 3f, 0.04f)),
     };
 
     // The tags the game REPLACES with a real object. Markup tags (UGCNoWalk, UGCLayoutOrigin,
@@ -87,6 +88,7 @@ public static class UGCMapValidator
         "UGCPedestalPlaceholder", "UGCAdScreenPlaceholder", "UGCGunCalibrationPlaceholder",
         "UGCPreviewTablePlaceholder", "UGCConcedeButtonBlue", "UGCConcedeButtonPink",
         "UGCStartBoxBlue", "UGCStartBoxPink", "UGCKillTeamButtonBlue", "UGCKillTeamButtonPink",
+        "UGCMirrorPlaceholder",
     };
 
     static readonly string[] PlayingSpawnTags = { "UGCSpawnPointBlue", "UGCSpawnPointPink" };
@@ -703,8 +705,13 @@ public static class UGCMapValidator
         return true;
     }
 
-    // On Unity's built-in Cube, only the +Z face maps the texture upright; the -Z face shows it
-    // rotated 180 degrees. Decide which side the players are on by looking for floor.
+    // A scoreboard goes on ONE flat face: a Quad. The score is drawn on every face of the mesh it
+    // is given, so on a Cube it also appears on the back, the edges and the top - stretched,
+    // mirrored or upside down - and only one of the six is right.
+    //
+    // On a flat mesh, check that the players are on the side that is drawn (UGC/Screen, like any
+    // shader that culls back faces, shows nothing from behind) and that the image is upright. Both
+    // only for UGC/Screen: another shader may draw both sides, and then "behind" is not an error.
     //
     // This used to also fail any scoreboard with geometry within 0.25 m in front of its face.
     // Removed: a screen recessed in a frame or under a canopy trips it while being perfectly
@@ -713,7 +720,32 @@ public static class UGCMapValidator
     {
         var mf = t.GetComponent<MeshFilter>();
         if (mf == null || mf.sharedMesh == null) return;
-        if (mf.sharedMesh.name != "Cube") return;
+        var mesh = mf.sharedMesh;
+
+        var normals = mesh.normals;
+        if (normals == null || normals.Length == 0) return;
+        Vector3 faceNormal = normals[0].normalized;
+        if (normals.Any(n => Vector3.Angle(n, faceNormal) > 5f))
+        {
+            Fail("Scoreboard '" + t.name + "' is on '" + mesh.name + "', a mesh with faces pointing in more than one "
+                + "direction. The score is drawn on every face, so all but one show it stretched, mirrored or upside "
+                + "down. Put the scoreboard material on a Quad (GameObject > 3D Object > Quad), and give it a backing "
+                + "object of its own if it needs one.", t.name);
+            return;
+        }
+
+        if (r.sharedMaterial.shader.name != "UGC/Screen") return;
+
+        var tris = mesh.triangles; var verts = mesh.vertices; var uvs = mesh.uv;
+        if (tris.Length < 3) return;
+
+        // The drawn side, from the winding (what the GPU culls by), not the stored normals, which
+        // a hand-made mesh can get wrong. A negative scale on one or three axes flips it.
+        var s = t.lossyScale;
+        float handedness = Mathf.Sign(s.x * s.y * s.z);
+        var wound = Vector3.Cross(verts[tris[1]] - verts[tris[0]], verts[tris[2]] - verts[tris[0]]);
+        var drawn = (t.TransformDirection(wound.normalized) * handedness).normalized;
+
         int Floor(Vector3 dirWorld)
         {
             int hitsFloor = 0;
@@ -723,16 +755,40 @@ public static class UGCMapValidator
                 for (float lat = -6f; lat <= 6f; lat += 3f)
                 {
                     var p = origin + dirWorld * dist + right * lat + Vector3.up * 5f;
-                    if (RaycastMap(root, p, Vector3.down, 5f + r.bounds.size.y + 6f, out var h) && h.normal.y > 0.8f) hitsFloor++;
+                    // Floor below the board's middle: players look up at a screen, and a roof
+                    // level with it or above is not where they stand.
+                    if (RaycastMap(root, p, Vector3.down, 5f + r.bounds.size.y + 6f, out var h) && h.normal.y > 0.8f
+                        && h.point.y < r.bounds.center.y) hitsFloor++;
                 }
             return hitsFloor;
         }
-        var up = t.TransformDirection(Vector3.forward); up.y = 0f; up.Normalize();
-        int front = Floor(up), back = Floor(-up);
-        if (back > front)
-            Fail("Scoreboard '" + t.name + "' is a built-in Cube whose upright (+Z, blue-axis) face points away from the "
-                + "players (" + front + " floor samples in front vs " + back + " behind). The side they see shows the score "
-                + "upside down - turn it 180 degrees.", t.name);
+
+        var flat = drawn; flat.y = 0f;
+        if (flat.sqrMagnitude > 0.25f)
+        {
+            flat.Normalize();
+            int front = Floor(flat), back = Floor(-flat);
+            if (back > front)
+                Fail("Scoreboard '" + t.name + "' shows its score on the side facing away from the players (" + front
+                    + " floor samples in front vs " + back + " behind); from where they stand it draws nothing. "
+                    + "Turn it 180 degrees.", t.name);
+        }
+
+        // Which way is "up" in the image: the direction texture V increases across the first triangle.
+        if (uvs.Length == verts.Length && Mathf.Abs(drawn.y) < 0.7f)
+        {
+            Vector3 p0 = verts[tris[0]], p1 = verts[tris[1]], p2 = verts[tris[2]];
+            Vector2 w0 = uvs[tris[0]], w1 = uvs[tris[1]], w2 = uvs[tris[2]];
+            Vector3 e1 = p1 - p0, e2 = p2 - p0; Vector2 d1 = w1 - w0, d2 = w2 - w0;
+            float det = d1.x * d2.y - d2.x * d1.y;
+            if (Mathf.Abs(det) > 1e-6f)
+            {
+                var vDir = t.TransformVector((e2 * d1.x - e1 * d2.x) / det);
+                if (vDir.y < 0f)
+                    Fail("Scoreboard '" + t.name + "' is upside down: the top of its image points at the floor. "
+                        + "Rotate it 180 degrees around the axis it faces along.", t.name);
+            }
+        }
     }
 
     // The smallest gap between a collider's underside and the map's own geometry beneath it,

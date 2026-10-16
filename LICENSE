@@ -1,0 +1,89 @@
+Snapshot VR Creator Kit License
+
+Copyright (c) 2026 Giant Scam Industries LLC. All rights reserved except as granted below.
+
+1. Definitions
+
+   "Giant Scam" means Giant Scam Industries LLC.
+
+   "Kit" means the contents of this repository and any release of it.
+
+   "Kit Materials" means everything in the Kit authored by or for Giant Scam, including models,
+   meshes, prefabs, textures, materials, shaders, scenes, reference maps, sounds, images, editor
+   tools and other source code, and documentation.
+
+   "Snapshot VR Content" means maps, arenas and other content made to be loaded and played in
+   the game Snapshot VR, published by Giant Scam.
+
+   "You" means any person or organisation that obtains or uses the Kit.
+
+2. The repository
+
+   You may download, clone, fork, copy and modify the Kit, and share it or your modified version
+   of it, provided that:
+
+   (a) this license is included, unchanged, with every copy or modified version you share; and
+   (b) everyone who receives the Kit from you receives it under this license and no other.
+
+3. Use of the Kit Materials
+
+   You may use the Kit Materials, and anything you make by modifying them, only to create, test
+   and publish Snapshot VR Content.
+
+   You may not use the Kit Materials, in whole or in part, modified or not:
+
+   (a) in any other game, application, engine project, or content for any other game;
+   (b) as part of an asset pack, code library, tool or other standalone collection, sold or
+       free, other than a copy of the Kit shared under section 2; or
+   (c) in any other way not permitted by section 2 or this section.
+
+4. Your content
+
+   You own the original work you create with the Kit. Kit Materials included in your Snapshot VR
+   Content remain the property of Giant Scam and stay under this license.
+
+   By publishing Snapshot VR Content (on mod.io or anywhere else it can be loaded into Snapshot
+   VR), you grant Giant Scam a worldwide, non-exclusive, royalty-free, sublicensable license to:
+
+   (a) host, copy, distribute, display and perform it in Snapshot VR and its related services,
+       on every platform the game runs on, now or in the future;
+   (b) modify, fix, convert and rebuild it, including rebuilding it for new versions of the game
+       or its engine, and replacing or adjusting the Kit Materials in it;
+   (c) show and promote it, including in screenshots, videos, trailers, store pages, featured
+       lists and match rotations; and
+   (d) let players use it within Snapshot VR.
+
+   This license cannot be revoked for any version you have already published. You may unpublish
+   your content at any time; Giant Scam will then stop listing it for new players within a
+   reasonable time, but copies players already have may stay playable, and promotional material
+   already made under (c) may continue to be used.
+
+   You confirm that you have the rights to everything in the content you publish, and that it
+   does not infringe anyone else's rights.
+
+   Publishing Snapshot VR Content is also subject to the terms of the platform you publish it on
+   (including mod.io) and to Snapshot VR's own terms. Giant Scam may decline to list, or remove
+   from the game, any content at its discretion.
+
+   Any use of your content beyond this license, such as selling it or making it an official
+   Snapshot VR map, requires a separate written agreement with you.
+
+5. Third-party components
+
+   Software that the Kit refers to but does not contain, such as Unity Editor packages
+   installed through the Unity Package Manager, is licensed by its owners under their own terms.
+   This license does not cover it.
+
+6. Changes and termination
+
+   Giant Scam may publish later versions of the Kit under different terms; those terms apply to
+   those versions. Your rights under this license end automatically if you break any of its
+   terms.
+
+7. No warranty
+
+   THE KIT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+   NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+   NONINFRINGEMENT. IN NO EVENT SHALL GIANT SCAM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+   CONNECTION WITH THE KIT OR THE USE OF OR OTHER DEALINGS IN THE KIT.
